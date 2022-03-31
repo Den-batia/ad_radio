@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#4E4B50">
+
+
+    <EditText
+        android:id="@+id/imp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="100px"
+        android:backgroundTint="@color/white"
+        android:textSize="2dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40pt"
+        android:layout_marginRight="10pt"
+        android:background="@color/white"
+        android:text="Пароль"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/imp_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="100px"
+        android:backgroundTint="@color/white"
+        android:textSize="2dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/imp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="40dp"
+        android:background="#B6B4BC"
+        app:srcCompat="@drawable/play_foreground" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/imp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="100dp"
+        android:background="#B6B4BC"
+        app:srcCompat="@drawable/play_foreground" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        style="@style/Widget.AppCompat.SeekBar"
+        android:layout_width="384dp"
+        android:layout_height="33dp"
+        android:layout_below="@id/imageButton2"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="40dp"
+        android:indeterminate="false" />
+
+    <SeekBar
+        android:id="@+id/seekBar1"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="130dp"
+        android:layout_marginBottom="24dp"
+        android:max="100"
+        android:progress="50"
+        android:progressTint="#9711D1"
+        android:scaleX="2.5"
+        android:scaleY="2.5"
+        android:thumbTint="#1727B5" />
+
+
+
+
+</RelativeLayout>
