@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0F3B4A"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -74,6 +75,7 @@
         android:layout_marginTop="80dp"
         android:hint="uri аудио потока"
         android:inputType="textUri"
+        android:background="@color/white"
         android:maxLines="1"
         android:textSize="16dp" />
 
@@ -110,7 +112,9 @@
         android:layout_height="40dp"
         android:layout_below="@+id/checkBox1"
         android:layout_centerHorizontal="true"
-        android:text="Подключиться" />
+        android:backgroundTint="#BBA046"
+        android:text="Подключиться"
+        android:textColor="@color/black" />
 
 
     <RelativeLayout
@@ -129,7 +133,7 @@
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="50dp"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="#BBA046"
             android:src="@drawable/play_red_foreground" />
 
         <ImageButton
@@ -138,7 +142,7 @@
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="50dp"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="#BBA046"
             android:clipToOutline="true"
             android:src="@drawable/stop_black_foreground" />
 
@@ -162,7 +166,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="18dp"
-                android:text="30"
                 android:visibility="visible" />
 
         </LinearLayout>
