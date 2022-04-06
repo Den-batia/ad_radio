@@ -49,7 +49,7 @@ public class FirstFragment extends Fragment {
         textView = view.findViewById(R.id.progress);
         seekBar = view.findViewById(R.id.seekBar1);
         editText = view.findViewById((R.id.url_input));
-        connect = view.findViewById(R.id.connect);
+        connect = view.findViewById(R.id.imageButton);
         load_prreff();
 
         binding.setings.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +78,7 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        binding.connect.setOnClickListener(new View.OnClickListener() {
+        binding.imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String url = editText.getText().toString();
