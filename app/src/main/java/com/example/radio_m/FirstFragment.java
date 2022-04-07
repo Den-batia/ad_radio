@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -84,6 +85,8 @@ public class FirstFragment extends Fragment {
                 String url = editText.getText().toString();
                 if (url.startsWith("http://") || url.startsWith("https://")){
                     System.out.println("хорошо");
+                    InputMethodManager imm = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     save_url_text(url);
                 }
                 else
