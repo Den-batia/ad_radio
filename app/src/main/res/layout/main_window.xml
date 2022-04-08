@@ -1,56 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/textInput"-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginHorizontal="10dp"-->
-<!--        android:layout_marginTop="80dp"-->
-<!--        android:hint="url аудио потока"-->
-<!--        app:boxBackgroundColor="@color/white"-->
-<!--        app:boxStrokeColor="@color/black"-->
-<!--        app:endIconMode="clear_text"-->
-<!--        app:hintTextColor="@color/black"-->
-<!--        app:startIconTint="@color/black">-->
-
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:inputType="textUri"-->
-<!--            android:maxLines="1" />-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/setings"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#D17199"
-        android:text="Настройки"
-        app:cornerRadius="25dp" />
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
-        android:background="@color/purple_200">
+        android:layout_height="60dp"
+        android:background="@color/teal_700">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/main_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:text="Главное меню"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                app:cornerRadius="10dp" />
+
+            <Button
+                android:id="@+id/best_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_toLeftOf="@+id/setings"
+                android:layout_weight="1"
+                android:backgroundTint="#9C27B0"
+                android:text="Избранное"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                app:cornerRadius="10dp" />
+
+            <Button
+                android:id="@+id/setings"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/setings"
+                android:layout_weight="1"
+                android:backgroundTint="#9C27B0"
+                android:text="Настройки"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                app:cornerRadius="10dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp">
+
+        <RelativeLayout
+
             android:id="@+id/player_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button_shape">
 
             <EditText
@@ -67,6 +86,8 @@
                 android:maxLines="1"
                 android:paddingHorizontal="10dp"
                 android:stateListAnimator="@null"
+                android:textColor="@color/black"
+                android:textColorHint="#424141"
                 android:textSize="16dp"
                 android:translationZ="4dp" />
 
@@ -77,8 +98,10 @@
                 android:layout_below="@+id/url_input"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="0dp"
-                android:text="Youtube" />
+                android:layout_marginTop="10dp"
+                android:buttonTint="@color/black"
+                android:text="Youtube"
+                android:textColor="@color/black" />
 
             <CheckBox
                 android:id="@+id/checkBox2"
@@ -86,7 +109,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/url_input"
                 android:layout_centerInParent="true"
-                android:text="Radio" />
+                android:layout_marginTop="10dp"
+                android:buttonTint="@color/black"
+                android:text="Radio"
+                android:textColor="@color/black" />
 
             <CheckBox
                 android:id="@+id/checkBox1"
@@ -94,10 +120,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/url_input"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="50dp"
-                android:text="Twitch" />
+                android:buttonTint="@color/black"
+                android:text="Twitch"
+                android:textColor="@color/black" />
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout
                 android:id="@+id/player"
                 android:layout_width="wrap_content"
                 android:layout_height="120dp"
@@ -112,8 +141,8 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="50dp"
-                    android:backgroundTint="#D17199"
+                    android:layout_marginLeft="30dp"
+                    android:backgroundTint="#8AC1BC"
                     android:paddingLeft="10dp"
                     android:stateListAnimator="@null"
                     android:translationZ="5dp"
@@ -127,8 +156,8 @@
                     android:layout_width="70dp"
                     android:layout_height="45dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="50dp"
-                    android:backgroundTint="#D17199"
+                    android:layout_marginRight="30dp"
+                    android:backgroundTint="#8AC1BC"
                     android:paddingLeft="10dp"
                     android:stateListAnimator="@null"
                     android:translationZ="5dp"
@@ -136,7 +165,8 @@
                     app:icon="@drawable/pause_red_foreground"
                     app:iconTint="#E91E63" />
 
-                <LinearLayout
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
                     android:id="@+id/liner"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -145,8 +175,8 @@
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="50dp"
-                        android:layout_height="45dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:clickable="true"
                         android:src="@drawable/volume_foreground" />
 
@@ -154,6 +184,7 @@
                         android:id="@+id/progress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="20"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:visibility="visible" />
@@ -169,6 +200,7 @@
                     android:layout_marginTop="20dp"
                     android:max="100"
                     android:progress="30"
+                    android:progressTint="#DA5EEF"
                     android:scaleX="1.5"
                     android:scaleY="1.5"
                     android:thumbTint="@color/purple_500" />
@@ -177,6 +209,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+
             android:id="@+id/content"
 
             android:layout_width="match_parent"
@@ -193,21 +226,37 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/button_shape"
                 android:backgroundTint="#EFEBF4"
                 android:padding="10dp"
                 android:text=" Станция: ------\n Битрейт: --------\n Жанр: -----"
+                android:textColor="@color/black"
                 android:textSize="16dp" />
 
-            <TextView
+            <Button
+                android:id="@+id/add_to_best"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView4"
                 android:layout_centerHorizontal="true"
+                android:backgroundTint="#8AC1BC"
+                android:text="Добавить в избранное"
+                android:textColor="@color/black"
+                app:cornerRadius="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/add_to_best"
+                android:layout_centerHorizontal="true"
                 android:layout_marginLeft="35dp"
                 android:layout_marginTop="50dp"
                 android:text="0"
+                android:textColor="@color/black"
                 android:textSize="16dp">
 
             </TextView>
@@ -216,10 +265,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView4"
+                android:layout_below="@+id/add_to_best"
                 android:layout_marginLeft="35dp"
                 android:layout_marginTop="80dp"
                 android:text="0"
+                android:textColor="@color/black"
                 android:textSize="16dp">
 
             </TextView>
@@ -228,7 +278,7 @@
                 android:id="@+id/content_seeker"
                 android:layout_width="match_parent"
                 android:layout_height="23dp"
-                android:layout_below="@+id/textView4"
+                android:layout_below="@+id/add_to_best"
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="85dp"
                 android:layout_marginTop="80dp"
@@ -242,11 +292,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView4"
+                android:layout_below="@+id/add_to_best"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="80dp"
                 android:layout_marginRight="15dp"
                 android:text="200"
+                android:textColor="@color/black"
                 android:textSize="16dp" />
 
 

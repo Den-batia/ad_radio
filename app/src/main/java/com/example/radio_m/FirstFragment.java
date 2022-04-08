@@ -1,5 +1,6 @@
 package com.example.radio_m;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,12 +12,15 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -27,13 +31,17 @@ import java.net.SocketOption;
 public class FirstFragment extends Fragment {
 
     private MainWindowBinding binding;
-    private TextView textView;
     SharedPreferences preferences;
+
+    private TextView textView;
     final static String SEAK_BAR = "SEAK_BAR";
     final static String URL_INPUT = "URL_INPUT";
     private SeekBar seekBar;
     private EditText editText;
     private Button connect;
+    private CheckBox checkBox;
+    private CheckBox checkBox1;
+    private CheckBox checkBox2;
 
     @Override
     public View onCreateView(
@@ -51,9 +59,22 @@ public class FirstFragment extends Fragment {
         seekBar = view.findViewById(R.id.seekBar1);
         editText = view.findViewById((R.id.url_input));
         connect = view.findViewById(R.id.imageButton);
+        checkBox = view.findViewById(R.id.checkBox);
+        checkBox1 = view.findViewById(R.id.checkBox1);
+        checkBox2 = view.findViewById(R.id.checkBox2);
         load_prreff();
 
+        binding.bestMenu.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(FirstFragment.this)
+                        .navigate(R.id.action_FirstFragment_to_TherdFragment);
+            }
+        });
+
         binding.setings.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
@@ -84,7 +105,6 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
                 String url = editText.getText().toString();
                 if (url.startsWith("http://") || url.startsWith("https://")){
-                    System.out.println("хорошо");
                     InputMethodManager imm = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     save_url_text(url);
@@ -94,7 +114,33 @@ public class FirstFragment extends Fragment {
 
             }
         });
+
+        binding.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkBox1.setChecked(false);
+                checkBox2.setChecked(false);
+            }
+        });
+
+        binding.checkBox1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkBox.setChecked(false);
+                checkBox2.setChecked(false);
+            }
+        });
+
+        binding.checkBox2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkBox.setChecked(false);
+                checkBox1.setChecked(false);
+            }
+        });
+
     }
+
 
     private void load_prreff() {
         preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -129,6 +175,9 @@ public class FirstFragment extends Fragment {
         textView = null;
         editText = null;
         seekBar = null;
+        checkBox = null;
+        checkBox1 = null;
+        checkBox2 = null;
     }
 
 }

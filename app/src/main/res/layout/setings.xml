@@ -4,25 +4,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/purple_500"
-        android:layout_margin="10dp"
-        app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+    <RelativeLayout
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/teal_700">
 
-    <Button
-        android:id="@+id/setings"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:text="Настройки"
-        android:visibility="invisible"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
 
-        android:layout_alignParentRight="true">
-    </Button>
+            <Button
+                android:id="@+id/main_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:backgroundTint="#9C27B0"
+                android:text="Главное меню"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                app:cornerRadius="10dp"
+                android:textSize="12dp"/>
+
+            <Button
+                android:id="@+id/best_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_toLeftOf="@+id/setings"
+                android:layout_marginHorizontal="10dp"
+                android:backgroundTint="#9C27B0"
+                android:text="Избранное"
+                android:layout_weight="1"
+                app:cornerRadius="10dp"
+                android:textColor="@color/black"
+                android:textSize="12dp"/>
+
+            <Button
+                android:id="@+id/setings"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_toLeftOf="@+id/setings"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/white"
+                android:text="Настройки"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                app:cornerRadius="10dp"
+                android:textSize="12dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/textView"
@@ -38,7 +71,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:layout_below="@+id/setings"
+        android:layout_below="@+id/bar"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:text="Радио подключено к Wifi модему..."

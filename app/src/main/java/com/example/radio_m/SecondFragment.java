@@ -20,6 +20,7 @@ public class SecondFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
+
         binding = SetingsBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
@@ -28,11 +29,19 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.back.setOnClickListener(new View.OnClickListener() {
+        binding.mainMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(SecondFragment.this)
                         .navigate(R.id.action_SecondFragment_to_FirstFragment);
+            }
+        });
+
+        binding.bestMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(SecondFragment.this)
+                        .navigate(R.id.action_SecondFragment_to_TherdFragment);
             }
         });
     }

@@ -10,11 +10,16 @@
         android:name="com.example.radio_m.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/main_window">
+        <action
+            android:id="@+id/action_FirstFragment_to_TherdFragment"
+            app:destination="@id/qwe" />
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/asa" />
+
     </fragment>
+
     <fragment
         android:id="@+id/asa"
         android:name="com.example.radio_m.SecondFragment"
@@ -24,6 +29,24 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_TherdFragment"
+            app:destination="@id/qwe"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/qwe"
+        android:name="com.example.radio_m.TherdFragment"
+        android:label="string"
+        tools:layout="@layout/fragment_therd">
+
+        <action
+            android:id="@+id/action_TherdFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_TherdFragment_to_SecondFragment"
+            app:destination="@id/asa" />
+    </fragment>
+
 
 </navigation>

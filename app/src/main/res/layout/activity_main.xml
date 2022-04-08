@@ -3,23 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".MainActivity"
     android:background="@color/white">
 
     <RelativeLayout
-        android:id="@+id/bar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/purple_500"
-        android:orientation="horizontal">
-
-
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <include layout="@layout/content_main" />
 
