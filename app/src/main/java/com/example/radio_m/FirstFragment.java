@@ -32,16 +32,14 @@ public class FirstFragment extends Fragment {
 
     private MainWindowBinding binding;
     SharedPreferences preferences;
-
     private TextView textView;
-    final static String SEAK_BAR = "SEAK_BAR";
-    final static String URL_INPUT = "URL_INPUT";
     private SeekBar seekBar;
     private EditText editText;
+    private TextView errors;
     private Button connect;
-    private CheckBox checkBox;
-    private CheckBox checkBox1;
-    private CheckBox checkBox2;
+//    private CheckBox checkBox;
+//    private CheckBox checkBox1;
+//    private CheckBox checkBox2;
 
     @Override
     public View onCreateView(
@@ -59,9 +57,11 @@ public class FirstFragment extends Fragment {
         seekBar = view.findViewById(R.id.seekBar1);
         editText = view.findViewById((R.id.url_input));
         connect = view.findViewById(R.id.imageButton);
-        checkBox = view.findViewById(R.id.checkBox);
-        checkBox1 = view.findViewById(R.id.checkBox1);
-        checkBox2 = view.findViewById(R.id.checkBox2);
+//        checkBox = view.findViewById(R.id.checkBox);
+//        checkBox1 = view.findViewById(R.id.checkBox1);
+//        checkBox2 = view.findViewById(R.id.checkBox2);
+        errors = view.findViewById(R.id.errors);
+//        errors.setVisibility(View.GONE);
         load_prreff();
 
         binding.bestMenu.setOnClickListener(new View.OnClickListener() {
@@ -103,50 +103,88 @@ public class FirstFragment extends Fragment {
         binding.imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = editText.getText().toString();
-                if (url.startsWith("http://") || url.startsWith("https://")){
-                    InputMethodManager imm = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    save_url_text(url);
+
+
+                String url = editText.getText().toString().trim();
+//                if(checkBox.isChecked())
+//                    check_bar = String.valueOf(checkBox.getText());
+//                if(checkBox1.isChecked())
+//                    check_bar = String.valueOf(checkBox1.getText());
+//                if(checkBox2.isChecked())
+//                    check_bar = String.valueOf(checkBox2.getText());
+
+                InputMethodManager imm = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                String string_errors = "";
+                if(url.isEmpty())
+                    string_errors += "* Введите 'url' аудио потока\n";
+                else if(!url.startsWith("http://"))
+                        string_errors += "* Адрес должен ачинаться с 'http://' или 'https://'\n";
+
+
+                if(url.isEmpty()){
+                    url = "";
                 }
-                else
-                    System.out.println("плохо");
 
+                if(string_errors.isEmpty()){
+                    errors.setVisibility(View.GONE);
+                    save_url_text(url);
+                    // играем
+                } else{
+                    errors.setText(string_errors);
+                    errors.setVisibility(View.VISIBLE);
+                }
             }
         });
 
-        binding.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkBox1.setChecked(false);
-                checkBox2.setChecked(false);
-            }
-        });
+//        binding.checkBox.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                checkBox1.setChecked(false);
+//                checkBox2.setChecked(false);
+//            }
+//        });
 
-        binding.checkBox1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkBox.setChecked(false);
-                checkBox2.setChecked(false);
-            }
-        });
+//        binding.checkBox1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                checkBox.setChecked(false);
+//                checkBox2.setChecked(false);
+//            }
+//        });
 
-        binding.checkBox2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkBox.setChecked(false);
-                checkBox1.setChecked(false);
-            }
-        });
+//        binding.checkBox2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                checkBox.setChecked(false);
+//                checkBox1.setChecked(false);
+//            }
+//        });
 
     }
 
 
     private void load_prreff() {
         preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        int seek_progress = Integer.parseInt(preferences.getString(SEAK_BAR, "30"));
-        String url_input = preferences.getString(URL_INPUT, "");
-
+        int seek_progress = Integer.parseInt(preferences.getString(String.valueOf(Day.SEAK_BAR), "30"));
+        String url_input = preferences.getString(String.valueOf(Day.URL_INPUT), "");
+//        String check_bar = preferences.getString(String.valueOf(Day.STREEM_TYPE), "");
+//        switch (check_bar) {
+//            case  ("Youtube"):
+//                checkBox.setChecked(true);
+//                break;
+//            case ("Radio"):
+//                checkBox2.setChecked(true);
+//                break;
+//            case ("Twitch"):
+//                checkBox1.setChecked(true);
+//                break;
+//            default:
+//                checkBox.setChecked(false);
+//                checkBox2.setChecked(false);
+//                checkBox1.setChecked(false);
+//                break;
+//        }
         textView.setText(String.valueOf(seek_progress));
         seekBar.setProgress(seek_progress);
         editText.setText(url_input);
@@ -156,7 +194,8 @@ public class FirstFragment extends Fragment {
     private void save_url_text(String url) {
         preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = preferences.edit();
-        ed.putString(URL_INPUT, url);
+        ed.putString(String.valueOf(Day.URL_INPUT), url);
+//        ed .putString(String.valueOf(Day.STREEM_TYPE), check_bar);
         ed.commit();
 
     }
@@ -164,7 +203,7 @@ public class FirstFragment extends Fragment {
     private void save_seek_text(String progress) {
         preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = preferences.edit();
-        ed.putString(SEAK_BAR, progress);
+        ed.putString(String.valueOf(Day.SEAK_BAR), progress);
         ed.commit();
     }
 
@@ -175,9 +214,9 @@ public class FirstFragment extends Fragment {
         textView = null;
         editText = null;
         seekBar = null;
-        checkBox = null;
-        checkBox1 = null;
-        checkBox2 = null;
+//        checkBox = null;
+//        checkBox1 = null;
+//        checkBox2 = null;
     }
 
 }
