@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#444B51">
 
-
+    #C9DCEC
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -27,7 +27,7 @@
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 app:cornerRadius="10dp" />
-
+<!--            9C27B0-->
             <Button
                 android:id="@+id/best_menu"
                 android:layout_width="wrap_content"
@@ -147,13 +147,13 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="30dp"
                     android:backgroundTint="#cf9bee"
+                    android:padding="15dp"
                     android:paddingLeft="10dp"
                     android:stateListAnimator="@null"
                     android:translationZ="5dp"
                     app:cornerRadius="25dp"
                     app:icon="@drawable/play_red_foreground"
-                    app:iconTint="#00AC07"
-                    android:padding="15dp"/>
+                    app:iconTint="#00AC07" />
 
                 <!--                    android:backgroundTint="#6accfb"-->
                 <com.google.android.material.button.MaterialButton
@@ -163,13 +163,13 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
                     android:backgroundTint="#cf9bee"
+                    android:padding="15dp"
                     android:paddingLeft="10dp"
                     android:stateListAnimator="@null"
                     android:translationZ="5dp"
                     app:cornerRadius="25dp"
                     app:icon="@drawable/pause_red_foreground"
-                    app:iconTint="#E91E63"
-                    android:padding="15dp"/>
+                    app:iconTint="#E91E63" />
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
@@ -223,7 +223,7 @@
                     android:id="@+id/errors"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
                     android:textColor="#FF0000"
                     android:textSize="12dp" />

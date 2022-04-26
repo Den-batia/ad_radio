@@ -30,6 +30,7 @@ import java.net.SocketOption;
 
 public class FirstFragment extends Fragment {
 
+    private String ip;
     private MainWindowBinding binding;
     SharedPreferences preferences;
     private TextView textView;
@@ -96,7 +97,16 @@ public class FirstFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 String progress = String.valueOf(seekBar.getProgress());
-                save_seek_text(progress);
+                String string_errors = "";
+                if(ip == ""){
+                    string_errors += "* ваш телефон (планшет) не синхронизирован с радиоприемником. Перейдите в паздел 'Настройки" +
+                            "' и синхронизируйтесь.\n";
+                    errors.setText(string_errors);
+                    errors.setVisibility(View.VISIBLE);
+                }else{
+                    Api.change_vol(ip, progress);
+                    save_seek_text(progress);
+                }
             }
         });
 
@@ -115,16 +125,16 @@ public class FirstFragment extends Fragment {
 
                 InputMethodManager imm = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 String string_errors = "";
-                if(url.isEmpty())
-                    string_errors += "* Введите 'url' аудио потока\n";
-                else if(!url.startsWith("http://"))
-                        string_errors += "* Адрес должен ачинаться с 'http://' или 'https://'\n";
-
-
-                if(url.isEmpty()){
+                if(ip == ""){
+                    string_errors += "* ваш телефон (планшет) не синхронизирован с радиоприемником. Перейдите в паздел 'Настройки" +
+                            "' и синхронизируйтесь.\n";
+                }else if(url.isEmpty()){
                     url = "";
-                }
+                    string_errors += "* Введите 'url' аудио потока\n";
+                }else if(!url.startsWith("http://"))
+                        string_errors += "* Адрес должен ачинаться с 'http://' или 'https://'\n";
 
                 if(string_errors.isEmpty()){
                     errors.setVisibility(View.GONE);
@@ -134,6 +144,8 @@ public class FirstFragment extends Fragment {
                     errors.setText(string_errors);
                     errors.setVisibility(View.VISIBLE);
                 }
+
+
             }
         });
 
@@ -168,6 +180,8 @@ public class FirstFragment extends Fragment {
         preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         int seek_progress = Integer.parseInt(preferences.getString(String.valueOf(Day.SEAK_BAR), "30"));
         String url_input = preferences.getString(String.valueOf(Day.URL_INPUT), "");
+        ip = preferences.getString(String.valueOf(Day.IP), "");
+
 //        String check_bar = preferences.getString(String.valueOf(Day.STREEM_TYPE), "");
 //        switch (check_bar) {
 //            case  ("Youtube"):
@@ -188,6 +202,7 @@ public class FirstFragment extends Fragment {
         textView.setText(String.valueOf(seek_progress));
         seekBar.setProgress(seek_progress);
         editText.setText(url_input);
+        errors.setVisibility(View.GONE);
 
     }
 

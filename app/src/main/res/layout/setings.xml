@@ -2,7 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#444B51">
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
 
     <RelativeLayout
         android:id="@+id/bar"
@@ -57,139 +62,141 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_below="@+id/textView1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:text="Ваш телефон подключен к точке 'Radio'..."
-        android:textSize="16dp" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_below="@+id/bar"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
-        android:text="Радио подключено к Wifi модему..."
-        android:textSize="16dp" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        app:srcCompat="@drawable/dot_grrrreen" />
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="120dp"
-        android:layout_marginRight="20dp"
-        app:srcCompat="@drawable/dot_grrrreen" />
-
-    <RelativeLayout
-        android:id="@+id/rel1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="60dp"
-
-        android:background="#C9DCEC">
-
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="Сменить пароль к точке доступа 'Radio'"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:layout_below="@+id/bar">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/imp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:hint="Введите новый пароль"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:textSize="16dp" />
+                <TextView
+                    android:id="@+id/text_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Для привязки устройсва необходимо:\n
+    1. Отключите на вашем телефоне (планшете) мобильную передачу данных.\n
+    2. Подключите ваш телефон (планшет) к точке доступа 'Radio'.\n
+    3. Далее введите имя и пароль wifi модема, к которому вы хотите подключить радиоприемник и нажмите кнопку 'Подключиться.'\n
+    4. Дожтитесь загорания зеленого светодиода на радиоприемнике снова подключитесь к точке дочтупа 'Radio'. (В случае если светодиод не загорается, проверьте правильность имени и пароля Wifi модема, к которому вы подключаете рпдиоприемник и повторите пукты 2 и 3)\n
+    5. Нажмите кнопку 'Привязать'"
+                    android:textStyle="bold">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imp"
-            android:layout_margin="10dp"
-            android:text="Сменить" />
-    </RelativeLayout>
+                </TextView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rel1"
-        android:layout_marginTop="60dp"
+                <Button
+                    android:id="@+id/connect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text_info"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="#2196F3"
+                    android:text="Привязать" />
 
-        android:background="#C9DCEC">
+                <TextView
+                    android:id="@+id/text_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/connect"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Сменить пароль к точке доступа 'Radio'"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
+                <EditText
+                    android:id="@+id/new_Radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text_1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="Введите новый пароль"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textCursorDrawable="@null"
+                    android:textSize="16dp"
+                    android:backgroundTint="@color/black"/>
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="Подключить радио к WiFi модему"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+                <Button
+                    android:id="@+id/change_pass_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/new_Radio"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="#2196F3"
 
-        <EditText
-            android:id="@+id/imp2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView3"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:hint="Введите имя точки доступа"
-            android:maxLines="1"
-            android:textSize="16dp" />
+                    android:text="Сменить" />
 
-        <EditText
-            android:id="@+id/imp1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imp2"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:hint="Введите пароль от точки доступа"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:textSize="16dp" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imp1"
-            android:layout_margin="10dp"
-            android:text="Подключиться" />
-    </RelativeLayout>
-
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/change_pass_radio">
 
 
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Подключить радио к WiFi модему"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
+                    <EditText
+                        android:id="@+id/imp2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView3"
+                        android:layout_marginLeft="10dp"
+                        android:hint="Введите имя точки доступа"
+                        android:maxLines="1"
+                        android:textSize="16dp"
+                        android:textCursorDrawable="@null"
+                        android:textColor="@color/black"
+                        android:backgroundTint="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/imp1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imp2"
+                        android:layout_marginLeft="10dp"
+                        android:hint="Введите пароль от точки доступа"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:textSize="16dp"
+                        android:textCursorDrawable="@null"
+                        android:textColor="@color/black"
+                        android:backgroundTint="@color/black"/>
+
+                    <Button
+                        android:id="@+id/button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imp1"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:backgroundTint="#2196F3"
+                        android:text="Подключиться"
+                        />
+                </RelativeLayout>
+
+
+
+            </RelativeLayout>
+
+
+        </ScrollView>
 </RelativeLayout>
