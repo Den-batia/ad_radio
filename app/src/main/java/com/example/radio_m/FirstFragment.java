@@ -3,41 +3,45 @@ package com.example.radio_m;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.radio_m.databinding.MainWindowBinding;
 
-import java.net.SocketOption;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 public class FirstFragment extends Fragment {
 
-    private String ip;
     private MainWindowBinding binding;
+
+    private String ip;
     SharedPreferences preferences;
     private TextView textView;
+    private TextView textView_info;
     private SeekBar seekBar;
     private EditText editText;
     private TextView errors;
     private Button connect;
+    private Button get_info;
 //    private CheckBox checkBox;
 //    private CheckBox checkBox1;
 //    private CheckBox checkBox2;
@@ -58,6 +62,8 @@ public class FirstFragment extends Fragment {
         seekBar = view.findViewById(R.id.seekBar1);
         editText = view.findViewById((R.id.url_input));
         connect = view.findViewById(R.id.imageButton);
+        get_info = view.findViewById(R.id.get_info);
+        textView_info = view.findViewById(R.id.textView4);
 //        checkBox = view.findViewById(R.id.checkBox);
 //        checkBox1 = view.findViewById(R.id.checkBox1);
 //        checkBox2 = view.findViewById(R.id.checkBox2);
@@ -65,6 +71,15 @@ public class FirstFragment extends Fragment {
 //        errors.setVisibility(View.GONE);
         load_prreff();
 
+        binding.getInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                String url = editText.getText().toString().trim();
+//                System.out.println(url);
+                new Task().execute("http://icecast.omroep.nl/radio6-bb-mp3");
+            }
+        });
+        http://icecast.omroep.nl/radio6-bb-mp3
         binding.bestMenu.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
@@ -104,7 +119,7 @@ public class FirstFragment extends Fragment {
                     errors.setText(string_errors);
                     errors.setVisibility(View.VISIBLE);
                 }else{
-                    Api.change_vol(ip, progress);
+                    Api.change_vol(ip, progress, getActivity());
                     save_seek_text(progress);
                 }
             }
@@ -234,4 +249,118 @@ public class FirstFragment extends Fragment {
 //        checkBox2 = null;
     }
 
+    private class Task extends AsyncTask<String, String, String> {
+
+        public String getArtist(Map<String, String> data) throws IOException {
+
+
+            if (!data.containsKey("StreamTitle"))
+                return "";
+
+            String streamTitle = data.get("StreamTitle");
+            int pos = streamTitle.indexOf(" - ");
+            String title = (pos == -1) ? streamTitle : streamTitle.substring(0, pos);
+
+            return title.trim();
+        }
+
+        public String getTitle(Map<String, String> data) throws IOException {
+            if (!data.containsKey("StreamTitle"))
+                return "";
+
+            String streamTitle = data.get("StreamTitle");
+            System.out.println(streamTitle);
+            int pos = streamTitle.indexOf(" - ");
+            String artist = (pos == -1) ? streamTitle : streamTitle.substring(pos+2);
+
+            return artist.trim();
+        }
+
+        @Override
+        protected void onPostExecute(String data){
+            super.onPostExecute(data);
+            textView_info.setText(data);
+        }
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+            System.out.println("ssssssssssssssssssssssssssssssssssssssssssss");
+            SharedPreferences preferences;
+            HttpURLConnection connection = null;
+            InputStream stream = null;
+            Map<String, String> metadata = null;
+            boolean isError = false;
+
+            URL url = null;
+            try {
+                url = new URL(strings[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestProperty("Icy-MetaData", "1");
+                int metaDataOffset = 0;
+                Map<String, List<String>> headers = connection.getHeaderFields();
+                stream = connection.getInputStream();
+                if (headers.containsKey("icy-metaint")) {
+                    // Headers are sent via HTTP
+                    metaDataOffset = Integer.parseInt(headers.get("icy-metaint").get(0));
+                }
+
+                if (metaDataOffset == 0) {
+                    isError = true;
+                    return null;
+                }
+                int b;
+                int count = 0;
+                int metaDataLength = 4080; // 4080 is the max length
+                boolean inData = false;
+                StringBuilder metaData = new StringBuilder();
+                while ((b = stream.read()) != -1) {
+                    count++;
+
+                    // Length of the metadata
+                    if (count == metaDataOffset + 1) {
+                        metaDataLength = b * 16;
+                    }
+
+                    if (count > metaDataOffset + 1 && count < (metaDataOffset + metaDataLength)) {
+                        inData = true;
+                    } else {
+                        inData = false;
+                    }
+                    if (inData) {
+                        if (b != 0) {
+                            metaData.append((char) b);
+                        }
+                    }
+                    if (count > (metaDataOffset + metaDataLength)) {
+                        break;
+                    }
+
+                }
+                stream.close();
+                metadata = IcyStreamMeta.parseMetadata(metaData.toString());
+                System.out.println(metadata);
+                if (!metadata.containsKey("StreamTitle"))
+                    return "";
+                String streamTitle = metadata.get("StreamTitle");
+                int pos = streamTitle.indexOf(" - ");
+                String author = (pos == -1) ? streamTitle : streamTitle.substring(0, pos);
+                String artist = (pos == -1) ? streamTitle : streamTitle.substring(pos+2);
+                System.out.println(streamTitle);
+
+                return streamTitle;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                if(connection !=null)
+                    connection.disconnect();
+
+            }
+
+            return null;
+        }
+    }
 }
