@@ -79,7 +79,6 @@ public class FirstFragment extends Fragment {
                 new Task().execute("http://icecast.omroep.nl/radio6-bb-mp3");
             }
         });
-        http://icecast.omroep.nl/radio6-bb-mp3
         binding.bestMenu.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
@@ -148,8 +147,9 @@ public class FirstFragment extends Fragment {
                 }else if(url.isEmpty()){
                     url = "";
                     string_errors += "* Введите 'url' аудио потока\n";
-                }else if(!url.startsWith("http://"))
+                }else if(!url.startsWith("http://") && !url.startsWith("https://")){
                         string_errors += "* Адрес должен ачинаться с 'http://' или 'https://'\n";
+                }
 
                 if(string_errors.isEmpty()){
                     errors.setVisibility(View.GONE);
@@ -197,23 +197,6 @@ public class FirstFragment extends Fragment {
         String url_input = preferences.getString(String.valueOf(Day.URL_INPUT), "");
         ip = preferences.getString(String.valueOf(Day.IP), "");
 
-//        String check_bar = preferences.getString(String.valueOf(Day.STREEM_TYPE), "");
-//        switch (check_bar) {
-//            case  ("Youtube"):
-//                checkBox.setChecked(true);
-//                break;
-//            case ("Radio"):
-//                checkBox2.setChecked(true);
-//                break;
-//            case ("Twitch"):
-//                checkBox1.setChecked(true);
-//                break;
-//            default:
-//                checkBox.setChecked(false);
-//                checkBox2.setChecked(false);
-//                checkBox1.setChecked(false);
-//                break;
-//        }
         textView.setText(String.valueOf(seek_progress));
         seekBar.setProgress(seek_progress);
         editText.setText(url_input);
@@ -240,10 +223,15 @@ public class FirstFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        ip = null;
+        preferences = null;
         textView = null;
-        editText = null;
+        textView_info = null;
         seekBar = null;
+        editText = null;
+        errors = null;
+        connect = null;
+        get_info = null;
 //        checkBox = null;
 //        checkBox1 = null;
 //        checkBox2 = null;
@@ -285,7 +273,6 @@ public class FirstFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... strings) {
-            System.out.println("ssssssssssssssssssssssssssssssssssssssssssss");
             SharedPreferences preferences;
             HttpURLConnection connection = null;
             InputStream stream = null;
@@ -330,6 +317,7 @@ public class FirstFragment extends Fragment {
                     if (inData) {
                         if (b != 0) {
                             metaData.append((char) b);
+//                            System.out.println((char)b);
                         }
                     }
                     if (count > (metaDataOffset + metaDataLength)) {
@@ -338,17 +326,18 @@ public class FirstFragment extends Fragment {
 
                 }
                 stream.close();
-                metadata = IcyStreamMeta.parseMetadata(metaData.toString());
-                System.out.println(metadata);
-                if (!metadata.containsKey("StreamTitle"))
-                    return "";
-                String streamTitle = metadata.get("StreamTitle");
-                int pos = streamTitle.indexOf(" - ");
-                String author = (pos == -1) ? streamTitle : streamTitle.substring(0, pos);
-                String artist = (pos == -1) ? streamTitle : streamTitle.substring(pos+2);
-                System.out.println(streamTitle);
+                String data = metaData.toString().replace("StreamTitle='", "").
+                        replace(",", "").
+                        replace(";", "");
+//                if(data.)
+//                if (!data.containsKey("StreamTitle"))
+//                    return "";
+//                String streamTitle = metadata.get("StreamTitle");
+//                int pos = streamTitle.indexOf(" - ");
+//                String author = (pos == -1) ? streamTitle : streamTitle.substring(0, pos);
+//                String artist = (pos == -1) ? streamTitle : streamTitle.substring(pos+2);
 
-                return streamTitle;
+                return data;
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();

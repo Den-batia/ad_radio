@@ -87,17 +87,32 @@
 
                 </TextView>
 
-                <Button
-                    android:id="@+id/connect"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/text_info"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:backgroundTint="#2196F3"
-                    android:text="Привязать" />
+
+
+
+                    <Button
+                        android:id="@+id/connect"
+                        android:layout_below="@+id/text_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:backgroundTint="#2196F3"
+                        android:text="Привязать"
+                        android:layout_alignParentLeft="true"/>
+
+                    <Button
+                        android:id="@+id/disconnect"
+                        android:layout_below="@+id/text_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:backgroundTint="#2196F3"
+                        android:text="Отвязать"
+                        android:layout_alignParentRight="true"/>
 
                 <TextView
                     android:id="@+id/text_1"

@@ -15,19 +15,29 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.radio_m.databinding.SetingsBinding;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
 public class SecondFragment extends Fragment {
 
+    String ip_s = "";
+    String error = "";
+    SharedPreferences preferences;
     private SetingsBinding binding;
-
     private Button connect;
+    private Button disconnect;
+
 
     @Override
     public View onCreateView(
@@ -42,8 +52,9 @@ public class SecondFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         connect = view.findViewById(R.id.connect);
+        disconnect = view.findViewById(R.id.disconnect);
+        load_prreff();
 
         binding.mainMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,20 +72,100 @@ public class SecondFragment extends Fragment {
             }
         });
 
+        binding.disconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save_ip("");
+            }
+        });
+
         binding.connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-//                new Task().execute("http://icecast-newradio.cdnvideo.ru/newradio3");
-
+                new Task_s().execute("");
             }
         });
+    }
+    private void save_ip(String ip) {
+        preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = preferences.edit();
+        ed.putString(String.valueOf(Day.IP), ip);
+        ed.commit();
+    }
+
+    private void load_prreff(){
+        preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        ip_s = preferences.getString(String.valueOf(Day.IP), "");
+    }
+
+
+
+    private class Task_s extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPostExecute(String data){
+            super.onPostExecute(data);
+            if(! data.isEmpty())
+                save_ip(data);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            InputStream stream = null;
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                URL url = new URL("http://192.168.100.101/api/wifi-info");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setConnectTimeout(5000);
+                connection.connect();
+                stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream)) ;
+                StringBuffer buffer = new StringBuffer();
+
+                String line = "";
+                while ((line = reader.readLine()) != null)
+                    buffer.append(line).append("\n");
+
+                JSONObject obj = new JSONObject(buffer.toString());
+
+                if(obj.has("ip")){
+                    return (String) obj.get("ip");
+                }
+
+
+            }catch (SocketTimeoutException e){
+                error = "Проверьте правильность подключения к точке доступа 'Radio' либо включите радиоприемник.";
+                return "";
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                if(connection !=null)
+                    connection.disconnect();
+                try{
+                    if(reader != null)
+                        reader.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        connect = null;
+        preferences = null;
     }
 
 
