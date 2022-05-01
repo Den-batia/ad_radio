@@ -92,22 +92,36 @@ public class SecondFragment extends Fragment {
         SharedPreferences.Editor ed = preferences.edit();
         ed.putString(String.valueOf(Day.IP), ip);
         ed.commit();
+        ip_s = ip;
+        if (!ip_s.isEmpty()){
+            connect.setText("Вы привязаны");
+            connect.setEnabled(false);
+        }else {
+            connect.setEnabled(true);
+            connect.setText("Привязать");
+        }
     }
 
     private void load_prreff(){
         preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         ip_s = preferences.getString(String.valueOf(Day.IP), "");
+        if (!ip_s.isEmpty()){
+            connect.setText("Вы привязаны");
+            connect.setEnabled(false);
+        }else {
+            connect.setEnabled(true);
+            connect.setText("Привязать");
+        }
     }
-
-
 
     private class Task_s extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPostExecute(String data){
             super.onPostExecute(data);
-            if(! data.isEmpty())
+            if(! data.isEmpty()){
                 save_ip(data);
+            }
         }
 
         @Override
@@ -153,6 +167,12 @@ public class SecondFragment extends Fragment {
                     if(reader != null)
                         reader.close();
                 }catch (IOException e){
+                    e.printStackTrace();
+                }
+                try {
+                    if(stream != null)
+                        stream.close();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }

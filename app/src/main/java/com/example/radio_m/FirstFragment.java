@@ -21,11 +21,19 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.radio_m.databinding.MainWindowBinding;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +84,9 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
 //                String url = editText.getText().toString().trim();
 //                System.out.println(url);
-                new Task().execute("http://icecast.omroep.nl/radio6-bb-mp3");
+                String url = editText.getText().toString();
+                if(!url.isEmpty())
+                    new Task().execute(url);
             }
         });
         binding.bestMenu.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +128,7 @@ public class FirstFragment extends Fragment {
                     errors.setText(string_errors);
                     errors.setVisibility(View.VISIBLE);
                 }else{
-                    Api.change_vol(ip, progress, getActivity());
+                    new Task_vol().execute(progress);
                     save_seek_text(progress);
                 }
             }
@@ -284,6 +294,7 @@ public class FirstFragment extends Fragment {
                 url = new URL(strings[0]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestProperty("Icy-MetaData", "1");
+                connection.connect();
                 int metaDataOffset = 0;
                 Map<String, List<String>> headers = connection.getHeaderFields();
                 stream = connection.getInputStream();
@@ -328,7 +339,8 @@ public class FirstFragment extends Fragment {
                 stream.close();
                 String data = metaData.toString().replace("StreamTitle='", "").
                         replace(",", "").
-                        replace(";", "");
+                        replace(";", "").
+                        replace("'", "");
 //                if(data.)
 //                if (!data.containsKey("StreamTitle"))
 //                    return "";
@@ -343,10 +355,79 @@ public class FirstFragment extends Fragment {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 if(connection !=null)
                     connection.disconnect();
 
+            }
+
+            return null;
+        }
+    }
+
+    private class Task_vol extends AsyncTask<String, String, String>{
+
+        @Override
+        protected void onPostExecute(String data){
+            super.onPostExecute(data);
+
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            HttpURLConnection connection = null;
+            InputStream stream = null;
+            OutputStream os = null;
+            BufferedReader reader = null;
+            String uri = "http://" + ip + "/api/volume/?volume=" + strings[0];
+
+            try {
+
+                URL url = new URL(uri);
+                connection = (HttpURLConnection)url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                connection.connect();
+
+                stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+                while ((line = reader.readLine()) != null)
+                    buffer.append(line).append("\n");
+                JSONObject obj = new JSONObject(buffer.toString());
+
+                if(obj.has("status")){
+                    return (String) obj.get("status");
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+            finally {
+                if(connection !=null)
+                    connection.disconnect();
+                try{
+                    if(reader != null)
+                        reader.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                try {
+                    if(stream != null)
+                        stream.close();
+                    if(os != null)
+                        os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             return null;
