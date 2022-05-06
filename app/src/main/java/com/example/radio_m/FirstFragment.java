@@ -42,14 +42,13 @@ public class FirstFragment extends Fragment {
     private MainWindowBinding binding;
 
     private String ip;
+    private String url_input;
     SharedPreferences preferences;
     private TextView textView;
     private TextView textView_info;
     private SeekBar seekBar;
     private EditText editText;
     private TextView errors;
-    private Button connect;
-    private Button get_info;
 //    private CheckBox checkBox;
 //    private CheckBox checkBox1;
 //    private CheckBox checkBox2;
@@ -69,8 +68,6 @@ public class FirstFragment extends Fragment {
         textView = view.findViewById(R.id.progress);
         seekBar = view.findViewById(R.id.seekBar1);
         editText = view.findViewById((R.id.url_input));
-        connect = view.findViewById(R.id.imageButton);
-        get_info = view.findViewById(R.id.get_info);
         textView_info = view.findViewById(R.id.textView4);
 //        checkBox = view.findViewById(R.id.checkBox);
 //        checkBox1 = view.findViewById(R.id.checkBox1);
@@ -134,6 +131,13 @@ public class FirstFragment extends Fragment {
             }
         });
 
+        binding.pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Task_play_pause().execute("pause");
+            }
+        });
+
         binding.imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,8 +167,14 @@ public class FirstFragment extends Fragment {
 
                 if(string_errors.isEmpty()){
                     errors.setVisibility(View.GONE);
-                    save_url_text(url);
-                    // играем
+                    if (url.equals(url_input)){
+                        new Task_play_pause().execute("play_song");
+                    }else{
+                        save_url_text(url);
+                        url_input = url;
+                        new Task_url_radio().execute(url);
+                    }
+
                 } else{
                     errors.setText(string_errors);
                     errors.setVisibility(View.VISIBLE);
@@ -204,7 +214,7 @@ public class FirstFragment extends Fragment {
     private void load_prreff() {
         preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         int seek_progress = Integer.parseInt(preferences.getString(String.valueOf(Day.SEAK_BAR), "30"));
-        String url_input = preferences.getString(String.valueOf(Day.URL_INPUT), "");
+        url_input = preferences.getString(String.valueOf(Day.URL_INPUT), "");
         ip = preferences.getString(String.valueOf(Day.IP), "");
 
         textView.setText(String.valueOf(seek_progress));
@@ -240,8 +250,6 @@ public class FirstFragment extends Fragment {
         seekBar = null;
         editText = null;
         errors = null;
-        connect = null;
-        get_info = null;
 //        checkBox = null;
 //        checkBox1 = null;
 //        checkBox2 = null;
@@ -293,6 +301,7 @@ public class FirstFragment extends Fragment {
             try {
                 url = new URL(strings[0]);
                 connection = (HttpURLConnection) url.openConnection();
+                connection.setConnectTimeout(5000);
                 connection.setRequestProperty("Icy-MetaData", "1");
                 connection.connect();
                 int metaDataOffset = 0;
@@ -386,6 +395,7 @@ public class FirstFragment extends Fragment {
 
                 URL url = new URL(uri);
                 connection = (HttpURLConnection)url.openConnection();
+                connection.setConnectTimeout(5000);
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -430,6 +440,139 @@ public class FirstFragment extends Fragment {
                 }
             }
 
+            return null;
+        }
+    }
+
+    private class Task_url_radio extends AsyncTask<String, String, String>{
+
+        @Override
+        protected void onPostExecute(String data){
+            super.onPostExecute(data);
+
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpURLConnection connection = null;
+            InputStream stream = null;
+            OutputStream os = null;
+            BufferedReader reader = null;
+            String uri = "http://" + ip + "/api/url_radio/?url_radio=" + strings[0];
+
+            try {
+
+                URL url = new URL(uri);
+                connection = (HttpURLConnection)url.openConnection();
+                connection.setConnectTimeout(5000);
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                connection.connect();
+
+                stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+                while ((line = reader.readLine()) != null)
+                    buffer.append(line).append("\n");
+                JSONObject obj = new JSONObject(buffer.toString());
+
+                if(obj.has("status")){
+                    return (String) obj.get("status");
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+            finally {
+                if(connection !=null)
+                    connection.disconnect();
+                try{
+                    if(reader != null)
+                        reader.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                try {
+                    if(stream != null)
+                        stream.close();
+                    if(os != null)
+                        os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+    }
+
+    private class Task_play_pause extends AsyncTask<String, String, String>{
+
+        @Override
+        protected void onPostExecute(String data){
+            super.onPostExecute(data);
+            System.out.println(data);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpURLConnection connection = null;
+            InputStream stream = null;
+            OutputStream os = null;
+            BufferedReader reader = null;
+            String uri = "http://" + ip + "/api/" + strings[0];
+
+            try {
+
+                URL url = new URL(uri);
+                connection = (HttpURLConnection)url.openConnection();
+                connection.setConnectTimeout(5000);
+                connection.connect();
+
+                stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+                while ((line = reader.readLine()) != null)
+                    buffer.append(line).append("\n");
+                JSONObject obj = new JSONObject(buffer.toString());
+
+                if(obj.has("status")){
+                    return (String) obj.get("status");
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+            finally {
+                if(connection !=null)
+                    connection.disconnect();
+                try{
+                    if(reader != null)
+                        reader.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                try {
+                    if(stream != null)
+                        stream.close();
+                    if(os != null)
+                        os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             return null;
         }
     }

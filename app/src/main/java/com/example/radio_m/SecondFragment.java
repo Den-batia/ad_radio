@@ -186,6 +186,7 @@ public class SecondFragment extends Fragment {
         binding = null;
         connect = null;
         preferences = null;
+        disconnect = null;
     }
 
 
